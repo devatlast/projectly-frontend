@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const inputClass =
   "w-full bg-[#0b0f0d] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-lime-400 transition";
+  const API_URL = '/api';
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -24,7 +25,7 @@ export default function SignupPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+        `${API_URL}/auth/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { Suspense, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');
+  const token = searchParams.get("token");
 
-  const [message, setMessage] = useState('Verifying your email...');
+  const [message, setMessage] = useState("Verifying your email...");
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
@@ -19,39 +19,38 @@ function VerifyEmailContent() {
     hasRun.current = true;
 
     if (!token) {
-      setMessage('The verification link is missing its token.');
+      setMessage("The verification link is missing its token.");
       setLoading(false);
       return;
     }
 
     const verifyEmail = async () => {
       try {
-        const apiUrl =
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+        const apiUrl = "/api";
         const response = await fetch(
           `${apiUrl}/auth/verify-email?token=${encodeURIComponent(token)}`,
           {
-            method: 'GET',
-            credentials: 'include',
+            method: "GET",
+            credentials: "include",
           },
         );
         const data = await response.json().catch(() => null);
         if (!response.ok) {
           throw new Error(
             data?.message ||
-              'Email verification failed. The link may have expired.',
+              "Email verification failed. The link may have expired.",
           );
         }
         setSuccess(true);
         setMessage(
-          data?.message || 'Your email has been verified successfully!',
+          data?.message || "Your email has been verified successfully!",
         );
       } catch (error) {
         setSuccess(false);
         setMessage(
           error instanceof Error
             ? error.message
-            : 'Something went wrong while verifying your email.',
+            : "Something went wrong while verifying your email.",
         );
       } finally {
         setLoading(false);
@@ -64,7 +63,9 @@ function VerifyEmailContent() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-black px-4 text-white">
       <div className="w-full max-w-md text-center">
-        <h1 className="text-3xl font-bold">Project<span className="text-green-400">ly</span></h1>
+        <h1 className="text-3xl font-bold">
+          Project<span className="text-green-400">ly</span>
+        </h1>
         <h2 className="mt-8 text-xl font-semibold">Email Verification</h2>
         <p className="mt-4 text-sm leading-6 text-gray-300">{message}</p>
 

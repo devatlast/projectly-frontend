@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 const inputClass =
   "w-full bg-[#0b0f0d] border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-lime-400 transition";
 
+const apiURL = '/api';
+
 export default function LoginPage() {
   const router = useRouter();
 
@@ -23,24 +25,20 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const response = await fetch(`${apiURL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
 
-      
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         throw new Error(
           Array.isArray(data.message)
             ? data.message.join(", ")
-            : data.message || "Login failed"
+            : data.message || "Login failed",
         );
       }
 
@@ -77,7 +75,10 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm text-gray-300 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm text-gray-300 mb-2"
+              >
                 Email
               </label>
               <input
@@ -94,7 +95,10 @@ export default function LoginPage() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm text-gray-300 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm text-gray-300 mb-2"
+              >
                 Password
               </label>
               <input
